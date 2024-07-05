@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 """
-A script that uses the Reddit API to output the
+A script that use reddit api to outputs the
 number of subscribers of a certain subreddit.
 """
+
 
 import json
 import requests
 
-def number_of_subscribers(subreddit):
-    url = f'https://www.reddit.com/r/{subreddit}/about.json'
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Raises exception for bad responses (4xx or 5xx)
 
-        data = response.json()
+def number_of_subscribers(subreddit):
+
+    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = json.loads(response.text)
         return data['data']['subscribers']
 
-    except requests.RequestException as e:
-        print(f"Error fetching subreddit data: {e}")
+    else:
         return 0
